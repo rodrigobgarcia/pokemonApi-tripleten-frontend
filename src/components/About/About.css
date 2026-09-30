@@ -1,0 +1,21 @@
+.about {
+  max-width: 65ch;
+}
+
+.about__eyebrow {
+  color: var(--color-red);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.about__title {
+  margin-top: 8px;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.about__text {
+  margin-top: 16px;
+  color: var(--color-muted);
+  font-size: 1.125rem;
+}
