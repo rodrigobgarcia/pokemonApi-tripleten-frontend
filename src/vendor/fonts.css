@@ -1,0 +1,40 @@
+@font-face {
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./fonts/outfit-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("./fonts/outfit-600.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./fonts/outfit-700.woff2") format("woff2");
+}
+
+:root {
+  --color-bg: #f4f7fb;
+  --color-surface: #ffffff;
+  --color-ink: #172033;
+  --color-muted: #5c6b82;
+  --color-line: #d7e0ec;
+  --color-navy: #172033;
+  --color-yellow: #ffcb05;
+  --color-red: #e85d4c;
+  --color-blue: #2f6fed;
+  --color-blue-dark: #1d4ed0;
+  --shadow: 0 12px 32px rgba(23, 32, 51, 0.08);
+  --radius: 18px;
+  --font: "Outfit", "Segoe UI", sans-serif;
+  --container: 1120px;
+}

@@ -1,0 +1,40 @@
+.header {
+  background: var(--color-navy);
+  color: #ffffff;
+}
+
+.header__bar {
+  width: min(var(--container), calc(100% - 32px));
+  min-height: 72px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.header__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.25rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.header__logo:hover {
+  color: var(--color-yellow);
+}
+
+.header__logo:focus-visible {
+  outline: 3px solid var(--color-yellow);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+.header__logo-image {
+  width: 36px;
+  height: 36px;
+}

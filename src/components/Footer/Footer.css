@@ -1,0 +1,31 @@
+.footer {
+  background: var(--color-navy);
+  color: #ffffff;
+}
+
+.footer__inner {
+  width: min(var(--container), calc(100% - 32px));
+  margin: 0 auto;
+  padding: 24px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer__link {
+  color: var(--color-yellow);
+  font-weight: 700;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease;
+}
+
+.footer__link:hover {
+  opacity: 0.8;
+}
+
+.footer__link:focus-visible {
+  outline: 3px solid var(--color-yellow);
+  outline-offset: 3px;
+}

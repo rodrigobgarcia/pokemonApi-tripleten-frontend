@@ -1,0 +1,31 @@
+.navigation__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+}
+
+.navigation__link {
+  display: block;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navigation__link:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.navigation__link:focus-visible {
+  outline: 3px solid var(--color-yellow);
+  outline-offset: 2px;
+}
+
+.navigation__link_active {
+  color: var(--color-navy);
+  background: var(--color-yellow);
+}
