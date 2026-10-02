@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import SearchForm from "../SearchForm/SearchForm";
 import "./Pokedex.css";
 import PokemonCard from "../PokemonCard/PokemonCard";
 import { getPokemonPage, searchPokemon, getPokemonByType } from "../../utils/api";
 import { POKEMON_TYPES, PAGE_SIZE } from "../../utils/constants";
 export default function Pokedex() {
-  const [query, setQuery] = useState("");
+  const [searchParams] = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get("busca") || "");
   const [type, setType] = useState("");
   const [pokemonList, setPokemonList] = useState([]);
   const [total, setTotal] = useState();
@@ -32,7 +34,7 @@ export default function Pokedex() {
       <p className="pokedex__text">
         A busca aceita parte do nome. Deixe o tipo em “Todos” para ver a lista geral.
       </p>
-      <SearchForm onSearch={(query) => {setQuery(query); setPage(1);}} />
+      <SearchForm initialValue={query} onSearch={(query) => {setQuery(query); setPage(1);}} />
       <label className="filter">
         Tipo
         <select value={type} onChange={(event) => {setType(event.target.value); setQuery(""); setPage(1)}} className="filter__select">
