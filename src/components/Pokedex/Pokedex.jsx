@@ -6,6 +6,7 @@ import PokemonCard from "../PokemonCard/PokemonCard";
 import Preloader from "../Preloader/Preloader";
 import { getPokemonPage, searchPokemon, getPokemonByType } from "../../utils/api";
 import { POKEMON_TYPES, PAGE_SIZE } from "../../utils/constants";
+import Status from "../Status/Status"
 export default function Pokedex() {
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState(searchParams.get("busca") || "");
@@ -13,6 +14,7 @@ export default function Pokedex() {
   const [pokemonList, setPokemonList] = useState([]);
   const [total, setTotal] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -22,8 +24,12 @@ export default function Pokedex() {
       .then(({pokemons, total}) => {
         setPokemonList(pokemons);
         setTotal(total);
+        setError("");
       })
-      .catch((err) => alert("Erro ao buscar Pokémon:", err))
+      .catch((err) => {
+        setError("Não foi possível carregar os Pokémons. Tente novamente.");
+        console.error(err);
+      })
       .finally(() => setIsLoading(false));
   }, [query, type, page]);
 
@@ -49,15 +55,17 @@ export default function Pokedex() {
       </label>
       {isLoading 
         ? <Preloader/>
-        : <ul className="pokedex__list">
-            {pokemonList.map((pkm) => {
-              return (
-                <li className="pokedex__item" key={pkm.id}>
-                  <PokemonCard pokemon={pkm} />
-                </li>
-              )
-            })}
-          </ul>
+        : error
+          ? <Status type="error">{error}</Status>
+          : <ul className="pokedex__list">
+              {pokemonList.map((pkm) => {
+                return (
+                  <li className="pokedex__item" key={pkm.id}>
+                    <PokemonCard pokemon={pkm} />
+                  </li>
+                )
+              })}
+            </ul>
       }
       <div className="pagination">
         <button className="button button_secondary" type="button" onClick={() => setPage(page - 1)} disabled={page <= 1}>
