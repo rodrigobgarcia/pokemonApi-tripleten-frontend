@@ -1,16 +1,39 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getPokemonByName } from "../../utils/api";
+import { getErrorMessage } from "../../utils/errors";
+import Preloader from "../Preloader/Preloader";
+import Status from "../Status/Status";
 import "./PokemonDetail.css";
 
-export default function PokemonDetail() {
+export default function PokemonDetail({teams, onAddToTeam, onCreateTeam}) {
   const { name } = useParams();
   const [pokemon, setPokemon] = useState(null);
-  const [team, setTeam] = useState([]);
+  const [error, setError] = useState("");
+  const [selectedTeamId, setSelectedTeamId] = useState("");
 
   useEffect(() => {
-    getPokemonByName(name).then((result) => setPokemon(result));
+    getPokemonByName(name)
+      .then((result) => {
+        setPokemon(result);
+        setError("");
+      })
+      .catch((err) => {
+        setError(getErrorMessage(err));
+        console.error(err);
+      });
   }, [name]);
+
+  if (error) {
+    return (
+      <section className="pokemon">
+        <Link className="pokemon__back" to="/pokedex">
+          Voltar para a Pokédex
+        </Link>
+        <Status type="error">{error}</Status>
+      </section>
+    );
+  }
 
   if (!pokemon) {
     return (
@@ -18,7 +41,7 @@ export default function PokemonDetail() {
         <Link className="pokemon__back" to="/pokedex">
           Voltar para a Pokédex
         </Link>
-        <p className="pokemon__id">Carregando...</p>
+        <Preloader />
       </section>
     );
   }
@@ -69,24 +92,29 @@ export default function PokemonDetail() {
             ))}
           </ul>
           <h2 className="pokemon__subtitle">Time</h2>
+          <label className="filter">
+            Escolha o time
+            <select
+              className="filter__select"
+              value={selectedTeamId}
+              onChange={(event) => setSelectedTeamId(event.target.value)}
+            >
+              <option value="">Selecione...</option>
+              {teams.map((team) => (
+                <option key={team.id} value={team.id}>
+                  {team.name}
+                </option>
+              ))}
+            </select>
+          </label>
           <button
             className="button"
             type="button"
-            onClick={() => {
-              const alreadyInTeam = team.some((member) => member.id === pokemon.id);
-              if (alreadyInTeam || team.length >= 6) {
-                return;
-              }
-              setTeam([...team, pokemon]);
-            }}
+            disabled={!selectedTeamId}
+            onClick={() => onAddToTeam(selectedTeamId, pokemon)}
           >
             Adicionar ao time
           </button>
-          <ul className="pokemon__abilities">
-            {team.map((member) => (
-              <li key={member.id}>{member.name}</li>
-            ))}
-          </ul>
         </div>
       </div>
     </section>
