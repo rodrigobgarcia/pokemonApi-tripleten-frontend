@@ -7,6 +7,7 @@ import Preloader from "../Preloader/Preloader";
 import { getPokemonPage, searchPokemon, getPokemonByType } from "../../utils/api";
 import { POKEMON_TYPES, PAGE_SIZE } from "../../utils/constants";
 import Status from "../Status/Status"
+import {getErrorMessage} from "../../utils/errors.js";
 export default function Pokedex() {
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState(searchParams.get("busca") || "");
@@ -27,7 +28,7 @@ export default function Pokedex() {
         setError("");
       })
       .catch((err) => {
-        setError("Não foi possível carregar os Pokémons. Tente novamente.");
+        setError(getErrorMessage(err));
         console.error(err);
       })
       .finally(() => setIsLoading(false));

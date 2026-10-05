@@ -1,16 +1,39 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getPokemonByName } from "../../utils/api";
+import { getErrorMessage } from "../../utils/errors";
+import Preloader from "../Preloader/Preloader";
+import Status from "../Status/Status";
 import "./PokemonDetail.css";
 
 export default function PokemonDetail() {
   const { name } = useParams();
   const [pokemon, setPokemon] = useState(null);
+  const [error, setError] = useState("");
   const [team, setTeam] = useState([]);
 
   useEffect(() => {
-    getPokemonByName(name).then((result) => setPokemon(result));
+    getPokemonByName(name)
+      .then((result) => {
+        setPokemon(result);
+        setError("");
+      })
+      .catch((err) => {
+        setError(getErrorMessage(err));
+        console.error(err);
+      });
   }, [name]);
+
+  if (error) {
+    return (
+      <section className="pokemon">
+        <Link className="pokemon__back" to="/pokedex">
+          Voltar para a Pokédex
+        </Link>
+        <Status type="error">{error}</Status>
+      </section>
+    );
+  }
 
   if (!pokemon) {
     return (
@@ -18,7 +41,7 @@ export default function PokemonDetail() {
         <Link className="pokemon__back" to="/pokedex">
           Voltar para a Pokédex
         </Link>
-        <p className="pokemon__id">Carregando...</p>
+        <Preloader />
       </section>
     );
   }
