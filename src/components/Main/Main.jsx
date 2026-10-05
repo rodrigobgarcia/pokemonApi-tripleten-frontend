@@ -1,18 +1,25 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { getRandomPokemon } from "../../utils/api";
+import { getErrorMessage } from "../../utils/errors";
 import SearchForm from "../SearchForm/SearchForm";
 import "./Main.css";
+import Status from "../Status/Status";
 
 export default function Main() {
   const navigate = useNavigate();
   const [isLoadingRandom, setIsLoadingRandom] = useState(false);
+  const [error, setError] = useState("");
 
   function handleRandom() {
+    setError("");
     setIsLoadingRandom(true);
     getRandomPokemon()
       .then((pokemon) => navigate(`/pokemon/${pokemon.name}`))
-      .catch((err) => alert("Erro ao buscar Pokémon aleatório:", err))
+      .catch((err) => {
+              setError(getErrorMessage(err));
+              console.error(err);
+            })
       .finally(() => setIsLoadingRandom(false));
   }
 
@@ -41,6 +48,7 @@ export default function Main() {
         >
           {isLoadingRandom ? "Sorteando..." : "Pokémon aleatório"}
         </button>
+      {error && <Status type="error">{error}</Status>}
       </section>
       <section className="steps" aria-labelledby="steps-title">
         <h2 className="steps__heading" id="steps-title">
