@@ -1,4 +1,19 @@
 .about {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.about__photo {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: var(--shadow);
+}
+
+.about__content {
   max-width: 65ch;
 }
 
@@ -14,8 +29,68 @@
   font-size: clamp(2rem, 4vw, 3rem);
 }
 
+.about__role {
+  margin-top: 4px;
+  color: var(--color-ink);
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
 .about__text {
   margin-top: 16px;
   color: var(--color-muted);
   font-size: 1.125rem;
+}
+
+.about__subtitle {
+  margin-top: 28px;
+  font-size: 1.25rem;
+}
+
+.about__skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.about__skill {
+  padding: 6px 14px;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  background: var(--color-surface);
+  font-size: 0.9375rem;
+}
+
+.about__link {
+  display: inline-block;
+  margin-top: 28px;
+  color: var(--color-blue);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition:
+    color 0.2s ease,
+    text-underline-offset 0.2s ease;
+}
+
+.about__link:hover,
+.about__link:focus-visible {
+  color: var(--color-blue-dark);
+  text-underline-offset: 6px;
+}
+
+@media (min-width: 768px) {
+  .about {
+    flex-direction: row;
+    gap: 48px;
+  }
+
+  .about__photo {
+    flex-shrink: 0;
+    width: 200px;
+    height: 200px;
+  }
 }

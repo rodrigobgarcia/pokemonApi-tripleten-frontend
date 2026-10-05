@@ -1,16 +1,72 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getPokemonByName } from "../../utils/api";
+import { getErrorMessage } from "../../utils/errors";
+import { TEAM_SIZE } from "../../utils/constants";
+import Preloader from "../Preloader/Preloader";
+import Status from "../Status/Status";
 import "./PokemonDetail.css";
+import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
-export default function PokemonDetail() {
+
+export default function PokemonDetail({ teams, onAddToTeam, onCreateTeam }) {
   const { name } = useParams();
   const [pokemon, setPokemon] = useState(null);
-  const [team, setTeam] = useState([]);
+  const [error, setError] = useState("");
+  const [selectedTeamId, setSelectedTeamId] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("")
+
 
   useEffect(() => {
-    getPokemonByName(name).then((result) => setPokemon(result));
+    getPokemonByName(name)
+      .then((result) => {
+        setPokemon(result);
+        setError("");
+      })
+      .catch((err) => {
+        setError(getErrorMessage(err));
+        console.error(err);
+      });
   }, [name]);
+
+  function handleCreate(name) {
+    onCreateTeam(name, pokemon);
+    setIsModalOpen(false);
+  }
+
+  function handleAdd() {
+    const team = teams.find((item) => item.id === selectedTeamId);
+
+    if (team.members.some((member) => member.id === pokemon.id)) {
+      setMessageType("error");
+      setMessage("Este Pokémon já está no time.");
+      return;
+    }
+
+    if (team.members.length >= TEAM_SIZE) {
+      setMessageType("error");
+      setMessage("Este time já está cheio.");
+      return;
+    }
+
+    onAddToTeam(selectedTeamId, pokemon);
+    setMessageType("success");
+    setMessage("Adicionado ao time!");
+
+  }
+
+  if (error) {
+    return (
+      <section className="pokemon">
+        <Link className="pokemon__back" to="/pokedex">
+          Voltar para a Pokédex
+        </Link>
+        <Status type="error">{error}</Status>
+      </section>
+    );
+  }
 
   if (!pokemon) {
     return (
@@ -18,7 +74,7 @@ export default function PokemonDetail() {
         <Link className="pokemon__back" to="/pokedex">
           Voltar para a Pokédex
         </Link>
-        <p className="pokemon__id">Carregando...</p>
+        <Preloader />
       </section>
     );
   }
@@ -69,26 +125,47 @@ export default function PokemonDetail() {
             ))}
           </ul>
           <h2 className="pokemon__subtitle">Time</h2>
+          <label className="filter">
+            Escolha o time
+            <select
+              className="filter__select"
+              value={selectedTeamId}
+              onChange={(event) => setSelectedTeamId(event.target.value)}
+            >
+              <option value="">Selecione...</option>
+              {teams.map((team) => (
+                <option key={team.id} value={team.id}>
+                  {team.name}
+                </option>
+              ))}
+            </select>
+          </label>
           <button
             className="button"
             type="button"
-            onClick={() => {
-              const alreadyInTeam = team.some((member) => member.id === pokemon.id);
-              if (alreadyInTeam || team.length >= 6) {
-                return;
-              }
-              setTeam([...team, pokemon]);
-            }}
+            disabled={!selectedTeamId}
+            onClick={handleAdd}
           >
             Adicionar ao time
           </button>
-          <ul className="pokemon__abilities">
-            {team.map((member) => (
-              <li key={member.id}>{member.name}</li>
-            ))}
-          </ul>
+          { message && <Status type={messageType}>{message}</Status> }
+          <button
+            className="button button_secondary"
+            type="button"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Novo time com este Pokémon
+          </button>
         </div>
       </div>
+      <ModalWithForm
+        key={isModalOpen ? "open" : "closed"}
+        name="create-team"
+        title="Novo time com este Pokemon"
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleCreate}
+        submitText="Criar time" />
     </section>
   );
 }
