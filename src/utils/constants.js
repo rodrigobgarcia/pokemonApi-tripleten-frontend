@@ -3,9 +3,16 @@ export const PAGE_SIZE = 12;
 export const TEAM_SIZE = 6;
 export const STORAGE_KEY = "poketimes-teams";
 
+
 export const AUTHOR = {
   name: "Rodrigo",
-  bio: "Estudante de desenvolvimento web. Este projeto usa a PokéAPI para pesquisar Pokémon e montar times de seis.",
+  role: "Desenvolvedor web em formação",
+  bio: [
+    "Sou estudante de desenvolvimento web full-stack. Gosto de transformar dados de APIs em interfaces simples de usar.",
+    "O PokéTimes é o projeto final do meu bootcamp. Nele pratiquei React, rotas, consumo de API e estados de carregamento e erro. A próxima fase traz um back-end próprio com login.",
+  ],
+  skills: ["React", "React Router", "JavaScript", "HTML e CSS", "Node.js", "Express", "MongoDB"],
+  github: "https://github.com/rodrigobgarcia",
 };
 
 export const NAV_LINKS = [

@@ -1,6 +1,5 @@
 import { STORAGE_KEY, TEAM_SIZE } from "./constants";
 
-// Temporário: a fase de back-end troca este localStorage por times autenticados.
 export function loadTeams() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);

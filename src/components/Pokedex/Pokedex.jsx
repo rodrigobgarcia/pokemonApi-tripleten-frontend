@@ -58,7 +58,10 @@ export default function Pokedex() {
         ? <Preloader/>
         : error
           ? <Status type="error">{error}</Status>
-          : <ul className="pokedex__list">
+
+          : pokemonList.length === 0
+            ? <Status>Nenhum Pokemon equivalente ao termo pesquisado</Status>
+            :<ul className="pokedex__list">
               {pokemonList.map((pkm) => {
                 return (
                   <li className="pokedex__item" key={pkm.id}>
