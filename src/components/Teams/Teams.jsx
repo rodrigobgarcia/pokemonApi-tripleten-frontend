@@ -32,8 +32,7 @@ export default function Teams({
         <div>
           <h1 className="teams__title">Seus times</h1>
           <p className="teams__text">
-            Cada time cabe 6 Pokémon. Eles ficam salvos neste navegador até a fase de
-            back-end.
+            Cada time cabe 6 Pokémon. Entre na conta para salvar os times no servidor.
           </p>
         </div>
         <Button type="button" onClick={() => setIsModalOpen(true)}>
